@@ -69,12 +69,15 @@
         <div>
             <q-btn label="Search" type="submit" color="primary"/>
             <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+            <q-btn label="Run Test Function" color="primary" @click="runTestFunction" />
         </div>
         </q-form>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'HomePage',
     data() {
@@ -95,7 +98,23 @@ export default {
     document.body.style.backgroundColor = '#EEEEEE';
   },
   methods: {
-    onSubmit() {
+
+    runTestFunction() {
+            // Make an HTTP request to trigger the desired functionality in index.js
+            axios.get('http://10.0.91.35:3000/run-test')
+                .then(response => {
+                    console.log(response.data); // Log the response from the server
+                    // Handle the response as needed
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Log any errors
+                    // Handle errors as needed
+                });
+        }
+
+
+
+    /*onSubmit() {
       const formData = {
         make: this.Make,
         model: this.Model,
@@ -139,14 +158,14 @@ export default {
             console.log(record[i].make);
             console.log(record[i].model);
             console.log(record[i].trim);
-            result1 = test();
-            console.log(result1);
+            //result1 = test();
+            //console.log(result1);
         }
     })
     .catch(error => {
         console.error(error.message);
     });
-    }
+    }*/
   }
 }
 </script>
