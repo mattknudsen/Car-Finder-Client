@@ -1,7 +1,7 @@
 <template>
     <div class="q-pa-lg" style="max-width: 500px; margin: 0 auto;">
         <q-form
-        @submit="onSubmit"
+        @submit="carSearch"
         @reset="onReset"
         class="q-gutter-md"
         >
@@ -82,16 +82,16 @@ export default {
     name: 'HomePage',
     data() {
     return {
-      Make: '',
-      Model: '',
-      Trim: '',
-      MinYear: '',
-      MaxYear: '',
-      City: '',
-      State: '',
-      Lat: '',
-      Long: '',
-      Radius: ''
+        Make: null,
+        Model: null,
+        Trim: null,
+        MinYear: null,
+        MaxYear: null,
+        City: null,
+        State: null,
+        Lat: null,
+        Long: null,
+        Radius: null
     };
   },
     mounted() {
@@ -110,62 +110,50 @@ export default {
                     console.error('Error:', error); // Log any errors
                     // Handle errors as needed
                 });
-        }
+    },
 
-
-
-    /*onSubmit() {
-      const formData = {
-        make: this.Make,
-        model: this.Model,
-        trim: this.Trim,
-        minYear: this.MinYear,
-        maxYear: this.MaxYear,
-        city: this.City,
-        state: this.State,
-        lat: this.Lat,
-        long: this.Long,
-        radius: this.Radius
+    carSearch() {
+        // Prepare the data object to send to the server
+      const searchData = {
+        Make: this.Make,
+        Model: this.Model,
+        Trim: this.Trim,
+        MinYear: this.MinYear,
+        MaxYear: this.MaxYear,
+        City: this.City,
+        State: this.State,
+        Lat: this.Lat,
+        Long: this.Long,
+        Radius: this.Radius
       };
 
-    const apiUrl = 'https://auto.dev/api/listings';
+      // Make a POST request to send the search data to the server
+      axios.post('http://10.0.91.35:3000/car-search', searchData)
+        .then(response => {
+          // Handle the response from the server as needed
+          console.log(response.data);
+        })
+        .catch(error => {
+            console.log(searchData);
+          // Handle errors
+          console.error('Error:', error);
+        });
+    },
 
-    const apiKey = 'ZrQEPSkKbWF0dGtudWRzZW4xMEBnbWFpbC5jb20=';
+    onReset() {
+      // Clear input fields on reset
+      this.Make = '';
+      this.Model = '';
+      this.Trim = '';
+      this.MinYear = '';
+      this.MaxYear = '';
+      this.City = '';
+      this.State = '';
+      this.Lat = '';
+      this.Long = '';
+      this.Radius = '';
+    }
 
-    const apiParams = {
-        apikey: apiKey,
-        year_min: formData.minYear,
-        year_max: formData.maxYear,
-        make: formData.make,
-        city: formData.city,
-        state: formData.state,
-        trim: formData.trim,
-        model: formData.model,
-        latitude: formData.lat,
-        longitude: formData.long,
-        radius: formData.radius,
-    };
-
-    axios.get(apiUrl, { params: apiParams })
-    .then(response => {
-        const record = response.data.records;
-        const recordSize = record.length;
-
-        for (var i=0; i < recordSize; i++) {
-            console.log("");
-            console.log(record[i].city);
-            console.log(record[i].year);
-            console.log(record[i].make);
-            console.log(record[i].model);
-            console.log(record[i].trim);
-            //result1 = test();
-            //console.log(result1);
-        }
-    })
-    .catch(error => {
-        console.error(error.message);
-    });
-    }*/
   }
 }
 </script>
